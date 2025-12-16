@@ -9,12 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
     renderExperience();
     renderContact();
     initAnimations();
+    // footer year
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
 });
 
 // Render Hero Section
 function renderHero() {
-    document.querySelector('.hero-title').textContent = portfolioConfig.personal.title;
-    document.querySelector('.hero-subtitle').textContent = portfolioConfig.personal.subtitle;
+    const title = document.querySelector('.hero-title');
+    const subtitle = document.querySelector('.hero-subtitle');
+    if (title) title.textContent = portfolioConfig.personal.name;
+    if (subtitle) subtitle.textContent = `${portfolioConfig.personal.title} • ${portfolioConfig.personal.subtitle}`;
     
     // Render stats
     const statsContainer = document.querySelector('.hero-stats');
@@ -48,7 +53,7 @@ function renderAbout() {
     html += '<div class="expertise-grid">';
     portfolioConfig.about.expertise.forEach(item => {
         html += `
-            <div class="expertise-item">
+            <div class="expertise-item reveal">
                 <h4>${item.title}</h4>
                 <p>${item.description}</p>
             </div>
@@ -58,7 +63,7 @@ function renderAbout() {
     
     // Achievements
     html += `
-        <div class="achievements-box">
+        <div class="achievements-box reveal">
             <h3>Key Achievements</h3>
             <ul class="achievements-list">
     `;
@@ -72,34 +77,17 @@ function renderAbout() {
 
 // Render Skills Section
 function renderSkills() {
-    const container = document.querySelector('.container');
-    const skillsHTML = `
-        <h2 class="section-title">Technical Skills</h2>
-        ${portfolioConfig.skills.categories.map(category => `
-            <div class="skills-category">
-                <h3>${category.title}</h3>
-                <div class="skills-grid">
-                    ${category.items.map(skill => `
-                        <span class="skill-badge">${skill}</span>
-                    `).join('')}
-                </div>
-            </div>
-        `).join('')}
-    `;
-    
-    // Insert skills section after about section
-    const aboutSection = document.getElementById('about');
-    const skillsSection = document.createElement('section');
-    skillsSection.id = 'skills';
-    skillsSection.className = 'section section-alt';
-    skillsSection.innerHTML = `<div class="container">${skillsHTML}</div>`;
-    aboutSection.after(skillsSection);
-    
-    // Update navigation
-    const navMenu = document.querySelector('.nav-menu');
-    const skillsNav = document.createElement('li');
-    skillsNav.innerHTML = '<a href="#skills">Skills</a>';
-    navMenu.children[1].after(skillsNav);
+    const mount = document.getElementById('skillsMount');
+    if (!mount) return;
+
+    mount.innerHTML = portfolioConfig.skills.categories.map(category => `
+      <div class="skills-category">
+        <h3>${category.title}</h3>
+        <div class="skills-grid">
+          ${category.items.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
 }
 
 // Render Projects Section
@@ -109,7 +97,7 @@ function renderProjects() {
     
     portfolioConfig.projects.forEach(project => {
         projectsGrid.innerHTML += `
-            <div class="project-card">
+            <article class="project-card reveal">
                 <div class="project-header">
                     <h3>${project.title}</h3>
                     <span class="project-tag">${project.tag}</span>
@@ -125,7 +113,7 @@ function renderProjects() {
                         <li>${highlight}</li>
                     `).join('')}
                 </ul>
-            </div>
+            </article>
         `;
     });
 }
@@ -133,43 +121,55 @@ function renderProjects() {
 // Render Certifications Section
 function renderCertifications() {
     const container = document.querySelector('#certifications .container');
+
+    const badgeMap = {
+        'Application Architect': '1765861105054_2021-03_Badge_SF-Certified_Application-Architect_High-Res.png',
+        'Data Architect': '1765861105055_2021-11_Badge_SF-Certified_Data-Architect_High-Res.png',
+        'Sharing and Visibility Architect': '1765861105055_2021-11_Badge_SF-Certified_Sharing-and-Visibility-Architect_High-Res.png',
+        'Identity and Access Management Architect': '1765861105054_2021-11_Badge_SF-Certified_ID-and-Access-Mgmt-Architect_High-Res.png',
+        'Platform Developer II': '1765861105054_2021-03_Badge_SF-Certified_Platform-Developer-II_High-Res.png',
+        'Platform Developer I': '1765861105055_2021-03_Badge_SF-Certified_Platform-Developer-I_High-Res.png',
+        'Tableau CRM and Einstein Discovery Consultant': '1765861105055_2021-03_Badge_SF-Certified_Tableau-CRM-and-Einstein-Discovery-Consultant_High-Res.png',
+        'OmniStudio Developer': '1765861105054_2021-03_Badge_SF-Certified_OmniStudio-Developer_High-Res.png',
+    };
+
+    const badgeCard = (name, extraClass = '') => {
+        const file = badgeMap[name];
+        const img = file ? `<img class="cert-badge" src="assets/badges/${file}" alt="${name} badge" loading="lazy" />` : '';
+        return `
+          <div class="cert-card ${extraClass} reveal">
+            ${img}
+            <h4>${name}</h4>
+          </div>
+        `;
+    };
     
     const html = `
+      <header class="section-head reveal">
         <h2 class="section-title">Certifications</h2>
-        <p class="section-intro">15 professional certifications: 11 Salesforce + 4 methodology certifications</p>
-        
-        <div class="cert-category">
-            <h3>Architect Certifications</h3>
-            <div class="cert-grid">
-                ${portfolioConfig.certifications.architect.map(cert => `
-                    <div class="cert-card">
-                        <h4>${cert}</h4>
-                    </div>
-                `).join('')}
-            </div>
+        <p class="section-intro">Architecture depth, delivery discipline — and enough badges to mildly annoy recruiters.</p>
+      </header>
+
+      <div class="cert-category">
+        <h3>Architect</h3>
+        <div class="cert-grid">
+          ${portfolioConfig.certifications.architect.map(cert => badgeCard(cert)).join('')}
         </div>
-        
-        <div class="cert-category">
-            <h3>Developer & Consultant Certifications</h3>
-            <div class="cert-grid">
-                ${portfolioConfig.certifications.developer.map(cert => `
-                    <div class="cert-card">
-                        <h4>${cert}</h4>
-                    </div>
-                `).join('')}
-            </div>
+      </div>
+
+      <div class="cert-category">
+        <h3>Developer & Consultant</h3>
+        <div class="cert-grid">
+          ${portfolioConfig.certifications.developer.map(cert => badgeCard(cert)).join('')}
         </div>
-        
-        <div class="cert-category">
-            <h3>Professional Methodology Certifications</h3>
-            <div class="cert-grid">
-                ${portfolioConfig.certifications.methodology.map(cert => `
-                    <div class="cert-card methodology">
-                        <h4>${cert}</h4>
-                    </div>
-                `).join('')}
-            </div>
+      </div>
+
+      <div class="cert-category">
+        <h3>Methodology</h3>
+        <div class="cert-grid">
+          ${portfolioConfig.certifications.methodology.map(cert => badgeCard(cert, 'methodology')).join('')}
         </div>
+      </div>
     `;
     
     container.innerHTML = html;
@@ -182,7 +182,7 @@ function renderExperience() {
     
     portfolioConfig.experience.forEach(exp => {
         timeline.innerHTML += `
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-year">${exp.year}</div>
                 <div class="timeline-content">
                     <h3>${exp.title}</h3>
@@ -247,42 +247,16 @@ function renderContact() {
 
 // Initialize Animations
 function initAnimations() {
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    // Scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
+    // Reveal on scroll
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('in');
             }
         });
-    }, observerOptions);
-    
-    // Observe all cards
-    document.querySelectorAll('.project-card, .cert-card, .expertise-item').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     
     // Active navigation
     const sections = document.querySelectorAll('section[id]');
