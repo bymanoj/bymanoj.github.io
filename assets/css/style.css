@@ -6,49 +6,58 @@
 }
 
 :root {
-    /* Professional Dark Theme with High Contrast */
-    --bg-primary: #0F1419;
-    --bg-secondary: #1A1F2E;
-    --bg-card: #242B3D;
-    --bg-elevated: #2D3548;
-    
-    /* Vibrant Accent Colors - Salesforce Inspired */
-    --accent-blue: #00A1E0;
-    --accent-purple: #7B68EE;
-    --accent-cyan: #00D9FF;
+    /* Brand Palette (from provided colors) */
+    --brand-white: #FFFFFF;
+    --brand-charcoal: #242424;
+    --brand-slate: #5C7C89;
+    --brand-ocean: #1F4959;
+    --brand-ink: #011425;
+
+    /* Backgrounds */
+    --bg-primary: var(--brand-ink);
+    --bg-secondary: var(--brand-ocean);
+    --bg-card: rgba(255, 255, 255, 0.06);
+    --bg-elevated: rgba(255, 255, 255, 0.09);
+
+    /* Accents */
+    --accent-blue: var(--brand-slate);
+    --accent-purple: var(--brand-ocean);
+    --accent-cyan: #A9C7D1;
     --accent-green: #2ECC71;
     --accent-orange: #FF9500;
-    --accent-gradient: linear-gradient(135deg, #00A1E0 0%, #7B68EE 100%);
-    
-    /* Readable Text Colors */
-    --text-primary: #FFFFFF;
-    --text-secondary: #B8BCC8;
-    --text-muted: #8B92A4;
-    
-    /* Subtle Glow Effects */
-    --glow-blue: 0 0 20px rgba(0, 161, 224, 0.3);
-    --glow-purple: 0 0 20px rgba(123, 104, 238, 0.3);
-    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.4);
-    
+    --accent-gradient: linear-gradient(135deg, var(--brand-ocean) 0%, var(--brand-slate) 100%);
+
+    /* Text */
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-secondary: rgba(255, 255, 255, 0.75);
+    --text-muted: rgba(255, 255, 255, 0.62);
+
+    /* Borders */
+    --border-color: rgba(92, 124, 137, 0.35);
+    --border-light: rgba(255, 255, 255, 0.10);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.45);
+
     /* Typography */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-heading: 'Poppins', sans-serif;
-    --font-weight-normal: 400;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
     /* Spacing */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 2rem;
     --spacing-lg: 4rem;
     --spacing-xl: 6rem;
-    
+
     /* Layout */
     --max-width: 1280px;
-    --border-radius: 12px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 14px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 body {
     font-family: var(--font-primary);
@@ -62,19 +71,29 @@ body {
 }
 
 /* Subtle animated gradient background */
+/* Subtle brand gradient background */
 body::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(0, 161, 224, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(123, 104, 238, 0.08) 0%, transparent 50%);
-    z-index: -1;
-    animation: gradientShift 15s ease infinite;
+    inset: 0;
+    background:
+        radial-gradient(circle at 15% 35%, rgba(31, 73, 89, 0.45) 0%, rgba(1, 20, 37, 0.0) 55%),
+        radial-gradient(circle at 85% 25%, rgba(92, 124, 137, 0.28) 0%, rgba(1, 20, 37, 0.0) 60%),
+        linear-gradient(180deg, rgba(1, 20, 37, 0.92) 0%, rgba(1, 20, 37, 1) 55%, rgba(31, 73, 89, 0.20) 100%);
+    z-index: -2;
 }
 
+/* Soft grain to avoid flat gradients (very subtle) */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    z-index: -1;
+}
 @keyframes gradientShift {
     0%, 100% {
         opacity: 1;
@@ -164,9 +183,8 @@ body::before {
 /* Hero Section */
 .hero {
     position: relative;
-    padding: var(--spacing-md) 0 var(--spacing-xl) 0;
-    background: var(--bg-gradient-1);
-    color: white;
+    padding: var(--spacing-xl) 0 var(--spacing-xl) 0;
+    color: var(--text-primary);
     text-align: center;
     overflow: hidden;
     min-height: 100vh;
@@ -174,7 +192,6 @@ body::before {
     flex-direction: column;
     justify-content: center;
 }
-
 .hero-banner {
     width: 100%;
     max-width: 1400px;
@@ -187,7 +204,7 @@ body::before {
     width: 100%;
     height: auto;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
     transition: transform 0.3s ease;
 }
 
@@ -239,14 +256,14 @@ body::before {
 .stat:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-5px);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
 }
 
 .stat-number {
     font-size: 3.5rem;
     font-weight: var(--font-weight-bold);
     line-height: 1;
-    background: linear-gradient(135deg, #FFD700, #FFA500);
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -287,7 +304,7 @@ body::before {
 .shape-1 {
     width: 300px;
     height: 300px;
-    background: linear-gradient(135deg, #00A1E0, #7B68EE);
+    background: var(--accent-gradient);
     top: 10%;
     left: 10%;
     animation-delay: 0s;
@@ -431,37 +448,38 @@ body::before {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    color: var(--text-primary);
-    font-weight: var(--font-weight-bold);
+    background: var(--accent-gradient);
+    color: var(--brand-white);
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: var(--shadow-xl);
-    background: linear-gradient(135deg, #FFA500, #FFD700);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    filter: saturate(1.05) brightness(1.03);
 }
-
 .btn-secondary {
-    background: linear-gradient(135deg, #00A1E0, #0070BA);
-    color: white;
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: var(--shadow-xl);
-    background: linear-gradient(135deg, #0070BA, #00A1E0);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: var(--shadow-sm);
 }
-
 .btn-tertiary {
-    background: linear-gradient(135deg, #7B68EE, #9B59B6);
+    background: linear-gradient(135deg, var(--brand-ocean), #9B59B6);
     color: white;
 }
 
 .btn-tertiary:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: var(--shadow-xl);
-    background: linear-gradient(135deg, #9B59B6, #7B68EE);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, #9B59B6, var(--brand-ocean));
 }
 
 /* Sections */
@@ -536,7 +554,7 @@ body::before {
     animation: gradientShift 5s ease infinite;
     border-radius: var(--border-radius);
     color: white;
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
     position: relative;
     overflow: hidden;
 }
@@ -656,7 +674,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-gradient-3);
+    background: var(--accent-gradient);
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: 0;
@@ -667,11 +685,11 @@ body::before {
 }
 
 .project-card:nth-child(1) {
-    border-top-color: #00A1E0;
+    border-top-color: var(--accent-blue);
 }
 
 .project-card:nth-child(2) {
-    border-top-color: #7B68EE;
+    border-top-color: var(--brand-ocean);
 }
 
 .project-card:nth-child(3) {
@@ -688,7 +706,7 @@ body::before {
 
 .project-card:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
 }
 
 .project-card > * {
@@ -817,7 +835,7 @@ body::before {
     transform: translateX(-50%);
     width: 80px;
     height: 4px;
-    background: var(--bg-gradient-3);
+    background: var(--accent-gradient);
     border-radius: 2px;
 }
 
@@ -880,17 +898,11 @@ body::before {
     z-index: 2;
 }
 
-.cert-card:nth-child(1) {
-    border-color: #00A1E0;
-}
+.cert-card:nth-child(1) { border-color: rgba(92, 124, 137, 0.8); }
 
-.cert-card:nth-child(2) {
-    border-color: #7B68EE;
-}
+.cert-card:nth-child(2) { border-color: rgba(31, 73, 89, 0.9); }
 
-.cert-card:nth-child(3) {
-    border-color: #FF6B6B;
-}
+.cert-card:nth-child(3) { border-color: rgba(255, 255, 255, 0.22); }
 
 .cert-card:nth-child(4) {
     border-color: #2ECC71;
