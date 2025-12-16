@@ -1,0 +1,28 @@
+# Site settings
+title: Manoj Patil | Salesforce Technical Architect
+description: Salesforce Technical Architect with 15+ years of experience delivering enterprise solutions across Real Estate, Government, Aviation, Financial Services, and Healthcare sectors in UAE.
+url: "https://bymanoj.github.io"
+baseurl: ""
+
+# Personal info
+author:
+  name: Manoj Patil
+  title: Salesforce Technical Architect
+  location: Dubai, UAE
+  email: contact@manojpatil.com
+  linkedin: https://www.linkedin.com/in/manojpatil86
+  certifications: 11 Salesforce Certifications
+  experience: 15+ Years
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
