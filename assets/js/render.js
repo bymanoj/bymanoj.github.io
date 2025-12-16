@@ -132,6 +132,10 @@ function renderCertifications() {
         'Tableau CRM and Einstein Discovery Consultant': '1765861105055_2021-03_Badge_SF-Certified_Tableau-CRM-and-Einstein-Discovery-Consultant_High-Res.png',
         'OmniStudio Developer': '1765861105054_2021-03_Badge_SF-Certified_OmniStudio-Developer_High-Res.png',
         'Platform App Builder':'badge-ab.png',
+        'DevOps Master':'devops.png',
+        'Scaled Agile Framework (SAFe) Agile Practitioner':'safe.png',
+        'Certified Scrum Master (CSM)':'csm.png',
+        'ITIL Foundation V3':'itil.png',
     };
 
     const badgeCard = (name, extraClass = '') => {
